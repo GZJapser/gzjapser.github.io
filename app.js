@@ -453,11 +453,13 @@ function checkWorkStartNotification() {
     }
 
     const now = new Date();
-    const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const [startHour, startMinute] = state.startTime.split(':').map(Number);
     const today = now.toDateString();
 
-    // Check if it's work start time and we haven't shown notification today
-    if (currentTime === state.startTime && state.lastWorkStartNotification !== today) {
+    // Check if it's work start time (within the same minute) and we haven't shown notification today
+    if (currentHour === startHour && currentMinute === startMinute && state.lastWorkStartNotification !== today) {
         showWorkStartNotification();
         state.lastWorkStartNotification = today;
     }
@@ -501,11 +503,13 @@ function checkWorkEndNotification() {
     }
 
     const now = new Date();
-    const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const [endHour, endMinute] = state.endTime.split(':').map(Number);
     const today = now.toDateString();
 
-    // Check if it's work end time and we haven't shown notification today
-    if (currentTime === state.endTime && state.lastWorkEndNotification !== today) {
+    // Check if it's work end time (within the same minute) and we haven't shown notification today
+    if (currentHour === endHour && currentMinute === endMinute && state.lastWorkEndNotification !== today) {
         showWorkEndNotification();
         state.lastWorkEndNotification = today;
     }
